@@ -127,7 +127,7 @@ Review provider terms before any public or commercial distribution.
 uv run ruff check backend scripts/*.py
 uv run ruff format --check backend scripts/*.py
 # Disposable test database only: business tables are recreated and deleted.
-TEST_DATABASE_URL=postgresql+psycopg://user:password@localhost:5432/pitchscope_test uv run pytest -q
+TEST_DATABASE_URL=postgresql+psycopg://user:password@localhost:5432/pitchscope_test uv run pytest -q --require-postgres
 cd frontend
 npm ci
 npm test
@@ -136,7 +136,9 @@ npx playwright install chromium
 npm run e2e  # API and frontend must be running
 ```
 
-Without TEST_DATABASE_URL, integration tests explicitly skip. Never use the demo
+The required --require-postgres mode fails for an unavailable/non-native database
+or any skipped test. Without that flag, local unit-only runs may explicitly skip
+integration tests when TEST_DATABASE_URL is absent. Never use the demo
 database for tests or run scripts/seed-test.py against it. CI uses native
 PostgreSQL and original synthetic fixtures, with no provider requests. A
 configured workflow is not a successful GitHub Actions run.

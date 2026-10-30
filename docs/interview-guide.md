@@ -42,8 +42,8 @@ serves Vite's production build and proxies /api in Compose.
   syscalls are denied. PGlite enabled local SQL tests, but it does not prove
   native multi-process or concurrent behaviour.
 - Chromium's Playwright runner is blocked by macOS Mach-port restrictions before
-  the test starts. The integrated browser was used to inspect the journey;
-  no successful Chromium runner or GitHub Actions run is claimed.
+  the test starts. The integrated browser provided initial inspection; native
+  PostgreSQL and Chromium were subsequently verified in green Linux CI runs.
 - psycopg prepared statements conflicted across PGlite's shared connection.
   Prepared statements were disabled, its local pool limited to one connection,
   and administrative work performed with the API stopped.
