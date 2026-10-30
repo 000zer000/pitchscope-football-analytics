@@ -7,6 +7,7 @@ export default defineConfig({
   use: {
     baseURL: process.env.BASE_URL || "http://127.0.0.1:5173",
     headless: true,
+    video: process.env.RECORD_VIDEO === "true" ? "on" : "retain-on-failure",
     viewport: { width: 1440, height: 1050 },
     trace: "retain-on-failure",
   },

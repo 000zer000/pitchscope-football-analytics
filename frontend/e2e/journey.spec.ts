@@ -97,6 +97,9 @@ test("search, filter, compare, inspect a match, export verified PDF", async ({
     fullPage: true,
   });
   await page.goto("/?view=players");
+  await page
+    .getByRole("button", { name: "Open profile for " + a.name, exact: true })
+    .waitFor();
   await page.screenshot({
     path: "test-results/explorer-desktop.png",
     fullPage: true,

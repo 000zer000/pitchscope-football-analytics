@@ -2,7 +2,7 @@
 
 This is an isolated repository. Do not modify neighbouring projects or application materials.
 Do not push, publish, spend money or create external resources without explicit permission.
-Local research demo only. All UI, reports, errors and project documentation must be in English.
+Public GitHub publication and zero-cost compatible hosting are explicitly authorized by the user. Never deploy raw provider-data responses without resolving redistribution rights. All UI, reports, errors and project documentation must be in English.
 Preserve real player names and original provider attributes without translating identities.
 
 Read README.md, docs/progress.md and docs/methodology.md before continuing.

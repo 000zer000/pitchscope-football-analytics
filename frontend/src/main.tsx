@@ -385,7 +385,8 @@ function Explorer({
         </div>
         <div className="banner-detail">
           <span className="banner-check">
-            <Check size={14} /> {coverage.synthetic ? "Synthetic test fixtures" : "Real data"}
+            <Check size={14} />{" "}
+            {coverage.synthetic ? "Synthetic test fixtures" : "Real data"}
           </span>
           <small>Stoppage time included · Shootouts excluded</small>
         </div>
