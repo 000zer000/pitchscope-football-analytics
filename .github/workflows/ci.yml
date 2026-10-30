@@ -1,0 +1,76 @@
+name: checks
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17.10-alpine
+        env:
+          POSTGRES_USER: pitchscope
+          POSTGRES_PASSWORD: test-only
+          POSTGRES_DB: pitchscope_test
+        ports: ['5432:5432']
+        options: --health-cmd 'pg_isready -U pitchscope -d pitchscope_test' --health-interval 3s --health-timeout 3s --health-retries 30
+    env:
+      DATABASE_URL: postgresql+psycopg://pitchscope:test-only@localhost:5432/pitchscope_test
+      TEST_DATABASE_URL: postgresql+psycopg://pitchscope:test-only@localhost:5432/pitchscope_test
+      PYTHONPATH: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          version: '0.12.10'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: uv sync --frozen --python 3.12
+      - run: uv run ruff check backend scripts/*.py && uv run ruff format --check backend scripts/*.py
+      # This dedicated database contains only original synthetic fixtures. No provider network.
+      - run: env -u DATABASE_URL uv run pytest -q --require-postgres
+      # pytest recreates only the disposable test schema; bootstrap migration history afresh.
+      - run: uv run alembic upgrade head && uv run python scripts/seed-test.py
+      - run: npm ci && npm test && npm run build
+        working-directory: frontend
+      - run: npx playwright install --with-deps chromium
+        working-directory: frontend
+      - run: |
+          uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/api.log 2>&1 &
+          npm --prefix frontend run dev > /tmp/web.log 2>&1 &
+          for i in $(seq 1 30); do curl -fsS http://127.0.0.1:5173/api/ready && break; sleep 1; done
+          cd frontend
+          npm run e2e
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-results
+          path: frontend/test-results
+  compose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Clean build and migrations
+        run: docker compose -p pitchscope-ci -f compose.yaml -f compose.ci.yaml up --build -d --wait
+      - name: Import twice and verify persistence across restart
+        run: |
+          set -euo pipefail
+          dc() { docker compose -p pitchscope-ci -f compose.yaml -f compose.ci.yaml "$@"; }
+          dc exec -T api python scripts/seed-test.py
+          dc exec -T api python scripts/seed-test.py
+          curl --fail http://127.0.0.1:8080/api/coverage > /tmp/before.json
+          python -c 'import json; c=json.load(open("/tmp/before.json")); assert c["events"]==9 and c["imported_matches"]==1'
+          dc restart db api web
+          dc up -d --wait
+          curl --fail http://127.0.0.1:8080/api/coverage > /tmp/after.json
+          python -c 'import json; a=json.load(open("/tmp/before.json")); b=json.load(open("/tmp/after.json")); assert (a["events"],a["players"],a["imports"])==(b["events"],b["players"],b["imports"])'
+          curl --fail 'http://127.0.0.1:8080/api/report.pdf?left=1&right=2&role=Forward&min_minutes=0' -o /tmp/report.pdf
+          python -c 'from pathlib import Path; p=Path("/tmp/report.pdf"); assert p.stat().st_size>5000 and p.read_bytes().startswith(b"%PDF")'
+      - name: Logs and cleanup
+        if: always()
+        run: |
+          docker compose -p pitchscope-ci -f compose.yaml -f compose.ci.yaml logs --no-color
+          docker compose -p pitchscope-ci -f compose.yaml -f compose.ci.yaml down -v

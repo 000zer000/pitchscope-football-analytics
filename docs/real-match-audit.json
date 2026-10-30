@@ -1,0 +1,29 @@
+[
+  {
+    "match_id": 3857271,
+    "duration_minutes": 117.15581666666667,
+    "checked_player": "Alireza Safar Beiranvand",
+    "checked_minutes": 19.202566666666666,
+    "goals_before_shootout": 8,
+    "shootout_shots": 0,
+    "substitutions": 11
+  },
+  {
+    "match_id": 3857273,
+    "duration_minutes": 106.60291666666666,
+    "checked_player": "Wayne Hennessey",
+    "checked_minutes": 88.18208333333332,
+    "goals_before_shootout": 2,
+    "shootout_shots": 0,
+    "substitutions": 9
+  },
+  {
+    "match_id": 3869685,
+    "duration_minutes": 141.41016666666667,
+    "checked_player": "Ousmane Dembélé",
+    "checked_minutes": 40.54285,
+    "goals_before_shootout": 6,
+    "shootout_shots": 8,
+    "substitutions": 13
+  }
+]

@@ -1,0 +1,16 @@
+[project]
+name = "pitchscope"
+version = "1.0.0"
+description = "Verifiable football event analytics"
+requires-python = ">=3.12,<3.15"
+dependencies = ["fastapi>=0.115,<1", "uvicorn>=0.34,<1", "pydantic>=2,<3", "sqlalchemy>=2.0,<2.1", "alembic>=1.14,<2", "psycopg[binary]>=3.2,<4", "httpx>=0.28,<1", "reportlab>=4,<5"]
+[dependency-groups]
+dev = ["pytest>=8,<10", "ruff>=0.11,<1", "pypdf>=5,<7", "pymupdf>=1.25,<2"]
+[tool.pytest.ini_options]
+pythonpath = ["backend"]
+testpaths = ["backend/tests"]
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I"]

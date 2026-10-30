@@ -1,0 +1,43 @@
+services:
+  db:
+    image: postgres:17.10-alpine
+    environment:
+      POSTGRES_USER: pitchscope
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pitchscope-local-only}
+      POSTGRES_DB: pitchscope
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U pitchscope -d pitchscope']
+      interval: 3s
+      timeout: 3s
+      retries: 30
+  api:
+    build: .
+    environment:
+      DATABASE_URL: postgresql+psycopg://pitchscope:${POSTGRES_PASSWORD:-pitchscope-local-only}@db:5432/pitchscope
+      CORS_ORIGINS: http://localhost:8080,http://127.0.0.1:8080
+    depends_on:
+      db: {condition: service_healthy}
+    command: [sh, -c, 'alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000']
+    healthcheck:
+      test: [CMD, python, -c, 'import urllib.request; urllib.request.urlopen("http://localhost:8000/api/ready")']
+      interval: 5s
+      timeout: 3s
+      retries: 30
+  web:
+    build: {context: ./frontend}
+    depends_on:
+      api: {condition: service_healthy}
+    ports: ['127.0.0.1:8080:80']
+  ingest:
+    build: .
+    profiles: [admin]
+    user: "${LOCAL_UID:-1000}:${LOCAL_GID:-1000}"
+    environment:
+      DATABASE_URL: postgresql+psycopg://pitchscope:${POSTGRES_PASSWORD:-pitchscope-local-only}@db:5432/pitchscope
+    volumes: ['./data:/app/data']
+    depends_on:
+      db: {condition: service_healthy}
+    entrypoint: [python, -m, app.ingest]
+volumes:
+  pgdata:

@@ -1,0 +1,62 @@
+{
+  "machine": {
+    "system": "Darwin",
+    "architecture": "arm64",
+    "logical_cpus": 8
+  },
+  "database": "PGlite PostgreSQL 18.6, single connection, WebAssembly; native PostgreSQL not measured",
+  "dataset": {
+    "imported_matches": 64,
+    "events": 234637,
+    "players": 680,
+    "source_commit": "4b73468fc5b0f1950f9f66fada70ad3a4f9327cb"
+  },
+  "method": "Sequential HTTP localhost, persistent client, 2 warmups then 10 attempts. API and DB warm. No concurrent requests.",
+  "results": [
+    {
+      "path": "/api/coverage",
+      "attempts": 10,
+      "warmups": 2,
+      "median_ms": 133.39,
+      "min_ms": 110.16,
+      "max_ms": 155.9,
+      "last_bytes": 40209
+    },
+    {
+      "path": "/api/players?role=Forward&min_minutes=180",
+      "attempts": 10,
+      "warmups": 2,
+      "median_ms": 7.3,
+      "min_ms": 7.0,
+      "max_ms": 7.85,
+      "last_bytes": 7950
+    },
+    {
+      "path": "/api/compare?left=5503&right=3009&role=Forward&min_minutes=180",
+      "attempts": 10,
+      "warmups": 2,
+      "median_ms": 7.12,
+      "min_ms": 6.98,
+      "max_ms": 7.44,
+      "last_bytes": 2151
+    },
+    {
+      "path": "/api/matches/3869685/events?kind=Shot&size=100",
+      "attempts": 10,
+      "warmups": 2,
+      "median_ms": 12.42,
+      "min_ms": 12.29,
+      "max_ms": 14.74,
+      "last_bytes": 86061
+    },
+    {
+      "path": "/api/report.pdf?left=5503&right=3009&role=Forward&min_minutes=180",
+      "attempts": 10,
+      "warmups": 2,
+      "median_ms": 318.59,
+      "min_ms": 310.38,
+      "max_ms": 353.01,
+      "last_bytes": 254110
+    }
+  ]
+}

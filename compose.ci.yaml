@@ -1,0 +1,11 @@
+# Disposable synthetic validation only. Never use this override for the real demo.
+services:
+  db:
+    environment:
+      POSTGRES_DB: pitchscope_test
+  api:
+    environment:
+      DATABASE_URL: postgresql+psycopg://pitchscope:pitchscope-local-only@db:5432/pitchscope_test
+  ingest:
+    environment:
+      DATABASE_URL: postgresql+psycopg://pitchscope:pitchscope-local-only@db:5432/pitchscope_test

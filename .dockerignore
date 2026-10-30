@@ -1,0 +1,7 @@
+.venv
+.git
+work
+data/raw
+frontend/node_modules
+frontend/dist
+scripts/local-db/node_modules
