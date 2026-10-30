@@ -12,7 +12,8 @@ permissions:
   contents: read
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     services:
       postgres:
         image: postgres:17.10-alpine
@@ -28,9 +29,11 @@ jobs:
       PYTHONPATH: backend
     steps:
       - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v6
-        with:
-          version: '0.12.10'
+      - name: Install pinned uv without post-job cache hooks
+        run: |
+          python3 -m venv /tmp/pitchscope-uv
+          /tmp/pitchscope-uv/bin/pip install uv==0.12.10
+          echo /tmp/pitchscope-uv/bin >> "$GITHUB_PATH"
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -69,7 +72,8 @@ jobs:
           name: browser-results
           path: frontend/test-results
   compose:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - name: Clean build and migrations

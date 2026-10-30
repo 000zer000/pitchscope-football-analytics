@@ -6,9 +6,17 @@ comparison, match-event inspection and backend-generated PDF scouting reports.
 with appearances, 32 teams and 234,637 events.** The interface, API messages,
 reports and documentation are in English.
 
-Local operation is demonstrated using PGlite (PostgreSQL compiled to WebAssembly).
-Native PostgreSQL, Docker and Chromium runner verification are documented
-separately in [progress and limitations](docs/progress.md). No deployment or push.
+[Public repository](https://github.com/000zer000/pitchscope-football-analytics) ·
+[CI checks](https://github.com/000zer000/pitchscope-football-analytics/actions/workflows/ci.yml)
+
+Compare players in an explicit tournament/role/minutes reference group, inspect
+the underlying match events, and export the same statistics as a PDF. The project
+demonstrates Python, SQL, API design, TypeScript frontend work and reproducible data
+engineering. Provider xG is supplied by StatsBomb, not trained by this project.
+
+No live application URL is claimed: [hosting and data-rights gates](docs/public-demo-readiness.md).
+See [validation progress](docs/progress.md) for executed checks rather than inferred
+success. [Recruiter material and learning exercise](docs/recruiter-summary.md).
 
 ## Start locally
 
@@ -38,7 +46,7 @@ PYTHONPATH=backend uv run python -m app.ingest rebuild
 
 ## Docker Compose
 
-Docker configuration is supplied; see progress.md for execution status.
+The clean Compose validation job passed on GitHub Linux; see progress.md for the exact run.
 
 ```bash
 cp .env.example .env

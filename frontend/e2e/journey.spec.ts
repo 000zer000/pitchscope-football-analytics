@@ -15,13 +15,14 @@ test("search, filter, compare, inspect a match, export verified PDF", async ({
   ).items;
   expect(rows.length).toBeGreaterThanOrEqual(2);
   const [a, b] = rows;
+  const threshold = process.env.RECORD_VIDEO === "true" ? "180" : "0";
   await page.goto("/");
   await page
     .getByRole("combobox", { name: "Role group", exact: true })
     .selectOption("Forward");
   await page
     .getByRole("combobox", { name: "Minimum minutes", exact: true })
-    .selectOption("0");
+    .selectOption(threshold);
   await page.getByRole("textbox", { name: "Search players" }).fill(a.name);
   await expect(
     page.getByRole("button", {
@@ -48,9 +49,15 @@ test("search, filter, compare, inspect a match, export verified PDF", async ({
         a.id +
         "&right=" +
         b.id +
-        "&role=Forward&min_minutes=180",
+        "&role=Forward&min_minutes=" +
+        threshold,
     )
   ).json();
+  await expect(
+    page.getByText(api.population.count + " reference players", {
+      exact: true,
+    }),
+  ).toBeVisible();
   for (const p of api.players) {
     const value = Number(p.xg).toLocaleString("en-GB", {
       minimumFractionDigits: 2,
@@ -62,6 +69,7 @@ test("search, filter, compare, inspect a match, export verified PDF", async ({
     page.waitForEvent("download"),
     page.getByRole("link", { name: "Export PDF report" }).click(),
   ]);
+  await download.saveAs("test-results/comparison.pdf");
   const file = await download.path();
   expect(file).toBeTruthy();
   expect(statSync(file!).size).toBeGreaterThan(5000);
