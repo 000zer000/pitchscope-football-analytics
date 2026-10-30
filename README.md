@@ -15,8 +15,9 @@ demonstrates Python, SQL, API design, TypeScript frontend work and reproducible 
 engineering. Provider xG is supplied by StatsBomb, not trained by this project.
 
 No live application URL is claimed: [hosting and data-rights gates](docs/public-demo-readiness.md).
-See [validation progress](docs/progress.md) for executed checks rather than inferred
-success. [Recruiter material and learning exercise](docs/recruiter-summary.md).
+Native PostgreSQL, Chromium E2E and clean Compose validation passed in
+[GitHub Actions](https://github.com/000zer000/pitchscope-football-analytics/actions/runs/41114023347).
+See [validation progress](docs/progress.md) for exact scope and results. [Recruiter material and learning exercise](docs/recruiter-summary.md).
 
 ## Start locally
 

@@ -32,4 +32,4 @@ Practical implementation:
 
 The official media pack https://statsbomb.com/media-pack/ redirects to Bynder.
 The logo supplied in the official repository was used. Provider availability and
-accuracy are not guaranteed by PitchScope. No publication or deployment occurred.
+accuracy are not guaranteed by PitchScope. The source code is public; no raw dataset or public event API was deployed.

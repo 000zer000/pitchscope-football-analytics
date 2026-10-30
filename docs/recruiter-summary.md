@@ -11,7 +11,7 @@ react, typescript, data-engineering, scouting, statsbomb, playwright.
 - Built an end-to-end football analytics application with FastAPI, PostgreSQL and React/TypeScript, analysing 64 World Cup matches and 234,637 source events with traceable player comparisons and PDF reports.
 - Designed a reproducible, hash-verified event ingestion pipeline with transactional imports, idempotence checks and explicit playing-time reconstruction; validated API/PDF consistency and documented provider-data limitations.
 
-Do not add native CI/production claims until the linked checks have actually passed.
+Native PostgreSQL integration, Chromium E2E and clean Compose validation have passed in GitHub Actions. This does not establish production load capacity.
 xG values are supplied by StatsBomb; no predictive model was trained. No real-user
 adoption or unmeasured scalability is claimed.
 

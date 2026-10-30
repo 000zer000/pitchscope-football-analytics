@@ -1,14 +1,37 @@
 # Delivery status — 30 October 2026
 
-## Exact status
+## Public verification update
 
-The complete real-data journey is implemented and demonstrated locally.
-Acceptance is not fully validated: Docker is unavailable, native PostgreSQL
-initialisation was blocked by shared-memory restrictions, and the Chromium
-Playwright runner was blocked by macOS Mach-port restrictions. These are not
-successful checks. GitHub Actions is configured but has not run remotely.
-No push, deployment, account, subscription or external resource was created.
-Isolated repository and branch: `pitchscope-football-analytics`, `feat/pitchscope-v1`.
+Public repository: https://github.com/000zer000/pitchscope-football-analytics
+
+Required checks passed on native PostgreSQL and Chromium, including clean Docker
+Compose startup, migrations, repeated import, PDF export and restart persistence:
+https://github.com/000zer000/pitchscope-football-analytics/actions/runs/41114020862
+
+The real-data run also passed, importing the pinned full tournament and executing
+the automated browser journey with an actual recording and saved comparison PDF:
+https://github.com/000zer000/pitchscope-football-analytics/actions/runs/41114023347
+
+Both runs verified commit 2d6b7fe451f05b420052c763755b23ed42b5672d.
+17 backend tests passed on native PostgreSQL, with no skipped integration tests;
+2 frontend tests and 1 Chromium E2E passed. Ruff, TypeScript and build passed.
+The required --require-postgres mode fails when the database is missing, is
+not native PostgreSQL, or any test is skipped. Its missing-database failure
+was checked explicitly. Synthetic CI fixtures are clearly labelled in the UI.
+
+No live application is claimed. Hosting login and provider-redistribution gates
+are documented in docs/public-demo-readiness.md. No paid resources were created.
+
+The initial service-health quoting defect was fixed. A subsequent uv cache-prune
+failure was traced to the background uv-run API holding its cache lock. Setup was
+simplified and API process lifecycle made explicit. Earlier failed/cancelled runs
+remain visible; no failure was relabelled as a successful check.
+
+The local pre-publication branch is preserved. Public main uses a separate clean
+history and GitHub noreply authorship; no force-push or other repository edits.
+See docs/publication-audit.md.
+
+## Earlier local validation baseline
 
 The product, PDF, API messages and documentation were converted to English at
 the user's request. Transformation 1.2.0 stores English role names; an explicit
@@ -75,15 +98,14 @@ non-shootout shot markers; filtering France leaves ten. Inspected source IDs:
 HMR createRoot warnings observed during development led to an explicit unmount
 cleanup. TestClient still emits an httpx deprecation warning while passing tests.
 
-## Remaining verification
+## Remaining deployment gates
 
-- Native PostgreSQL 17: initdb failed on shmget (Operation not permitted), even
-  with mmap/posix settings. PGlite does not validate native concurrency/processes.
-- Docker: unavailable, so a clean Compose startup is not claimed.
-- Chromium runner: installed and attempted, but failed before the first test at
-  bootstrap_check_in / MachPortRendezvousServer (Permission denied).
-- GitHub Actions: workflow only, no remote run or repository created.
-- Public/commercial distribution: review provider terms first; current demo is local.
+Native PostgreSQL, Docker and Chromium checks that were blocked locally have now
+been executed successfully in Linux CI. GitHub Actions is no longer merely configured.
+
+Only live deployment remains unfulfilled: no compatible hosting login is available,
+and the current original-event JSON endpoint needs a resolved redistribution contract
+before public exposure. No static simulation is substituted for the application.
 
 ## Resume
 

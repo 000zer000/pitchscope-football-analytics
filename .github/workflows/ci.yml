@@ -61,8 +61,12 @@ jobs:
       - run: npx playwright install --with-deps chromium
         working-directory: frontend
       - run: |
-          uv run uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/api.log 2>&1 &
+          set -euo pipefail
+          .venv/bin/uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/api.log 2>&1 &
+          api_pid=$!
           npm --prefix frontend run dev > /tmp/web.log 2>&1 &
+          web_pid=$!
+          trap 'kill "$api_pid" "$web_pid" 2>/dev/null || true' EXIT
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:5173/api/ready && break; sleep 1; done
           cd frontend
           RECORD_VIDEO=${{ inputs.real_data }} npm run e2e
