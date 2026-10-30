@@ -1,4 +1,5 @@
 import os
+from threading import BoundedSemaphore
 from typing import Annotated, Literal
 
 from fastapi import Depends, FastAPI, HTTPException, Query
@@ -19,6 +20,7 @@ app.add_middleware(
     allow_methods=["GET"],
     allow_headers=["Accept"],
 )
+REPORT_SLOTS = BoundedSemaphore(2)
 DB = Annotated[Session, Depends(session)]
 Role = Literal["Goalkeeper", "Defender", "Midfielder", "Forward"]
 SeasonID = Literal["43-106"]
@@ -113,14 +115,19 @@ def report(
     min_minutes: int = Query(180, ge=0, le=10000),
     season: SeasonID = "43-106",
 ):
-    data = compare(db, left, right, role, min_minutes, season)
-    from app.report import render_report
+    if not REPORT_SLOTS.acquire(blocking=False):
+        raise HTTPException(429, "Report capacity reached; retry shortly", headers={"Retry-After": "2"})
+    try:
+        data = compare(db, left, right, role, min_minutes, season)
+        from app.report import render_report
 
-    return Response(
-        render_report(data, services.coverage(db)),
-        media_type="application/pdf",
-        headers={"Content-Disposition": 'attachment; filename="pitchscope-comparison.pdf"'},
-    )
+        return Response(
+            render_report(data, services.coverage(db)),
+            media_type="application/pdf",
+            headers={"Content-Disposition": 'attachment; filename="pitchscope-comparison.pdf"'},
+        )
+    finally:
+        REPORT_SLOTS.release()
 
 
 @app.get("/api/matches")

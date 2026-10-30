@@ -139,6 +139,7 @@ def coverage(db):
             "events": 0,
             "players": 0,
         }
+    teams = list(db.scalars(select(Team).order_by(Team.name)))
     imports = db.scalars(select(ImportRecord).order_by(ImportRecord.match_id)).all()
     matches = db.scalars(select(Match).order_by(Match.date, Match.id)).all()
     return {
@@ -151,7 +152,7 @@ def coverage(db):
         "events": db.scalar(select(func.count()).select_from(Event)),
         "players": db.scalar(select(func.count(func.distinct(A.player_id)))),
         "uncertain_appearances": db.scalar(select(func.count()).select_from(A).where(A.minutes.is_(None))),
-        "teams": [{"id": t.id, "name": t.name} for t in db.scalars(select(Team).order_by(Team.name))],
+        "teams": [{"id": t.id, "name": t.name} for t in teams],
         "imports": [
             {
                 "match_id": r.match_id,

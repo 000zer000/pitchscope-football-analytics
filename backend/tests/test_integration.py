@@ -163,3 +163,17 @@ def test_nested_event_validation():
     e.pop("pass")
     with pytest.raises(ValidationError):
         SourceEvent.model_validate(e)
+
+
+def test_report_capacity_is_bounded(client):
+    from app.main import REPORT_SLOTS
+
+    REPORT_SLOTS.acquire()
+    REPORT_SLOTS.acquire()
+    try:
+        response = client.get("/api/report.pdf?left=1&right=2")
+        assert response.status_code == 429
+        assert response.headers["retry-after"] == "2"
+    finally:
+        REPORT_SLOTS.release()
+        REPORT_SLOTS.release()
