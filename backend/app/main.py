@@ -13,7 +13,7 @@ from app import services
 from app.db import session
 from app.models import Appearance, Event, Match
 
-app = FastAPI(title="PitchScope", version="1.0.0", description="Verifiable statistics · StatsBomb Open Data")
+app = FastAPI(title="PitchScope", version="1.1.0", description="Verifiable statistics · StatsBomb Open Data")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(","),

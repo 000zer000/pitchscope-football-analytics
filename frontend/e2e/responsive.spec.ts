@@ -50,6 +50,7 @@ test("search, profile, match filters and PDF remain usable at both required widt
     await expect(
       page.getByRole("heading", { name: "Shot map", exact: true }),
     ).toBeVisible();
+    await expect(page.locator(".breadcrumb strong")).toHaveText("Matches");
     const api = await (
       await request.get(`/api/matches/${match}/events?kind=Shot&size=500`)
     ).json();

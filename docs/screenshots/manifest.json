@@ -1,0 +1,64 @@
+{
+  "capture": "Real Chromium regression journey, complete pinned 2022 World Cup; refreshed 1 November 2026",
+  "viewport_widths": [
+    390,
+    1440
+  ],
+  "notes": "Screenshots wait for loaded data and verified chart geometry. Raw JSON disclosure remains closed. Case-study visual is a rendered aggregate chart.",
+  "files": [
+    {
+      "path": "case-study.jpg",
+      "width": 1000,
+      "height": 650,
+      "sha256": "0ed3ad052083a69bbc0ae47846510aba592be59f79a8ba5f312d684392761217"
+    },
+    {
+      "path": "comparison-desktop.jpg",
+      "width": 1440,
+      "height": 1749,
+      "sha256": "ce1d87c708b115d5af9990d33262662e3d435fd914fd7e30844e7bfd42b3d171"
+    },
+    {
+      "path": "comparison-mobile.jpg",
+      "width": 390,
+      "height": 2900,
+      "sha256": "6af0f2a35228c8b3b6e5a3c477377e4cf0f7eb3cadad8e197e51f055453da851"
+    },
+    {
+      "path": "explorer-desktop.jpg",
+      "width": 1440,
+      "height": 2127,
+      "sha256": "8835616eefa54c279207318f7263f7f1e9cfaccbe7db2d52138dbe81c9ecc182"
+    },
+    {
+      "path": "explorer-mobile.jpg",
+      "width": 390,
+      "height": 2406,
+      "sha256": "809bf94b99b24cb94e5e5e775792e2b5696b6c8b284b01c371d632313bc8d3de"
+    },
+    {
+      "path": "match-desktop.jpg",
+      "width": 1440,
+      "height": 3224,
+      "sha256": "1cfe9fc668dab77ce436613ce66f39aba995fed9d4b5bf1aa37a38bf855c0636"
+    },
+    {
+      "path": "match-mobile.jpg",
+      "width": 390,
+      "height": 4701,
+      "sha256": "9038f8922aba2147b2fc9f69bef2ad7b231803ca775eb5abd79a3f75c7cf5551"
+    },
+    {
+      "path": "profile-desktop.jpg",
+      "width": 1440,
+      "height": 1179,
+      "sha256": "24f40e2c7893f928e5633d9ff7843ed7b87b3b5f61cf1d1642a19ac19a448b7d"
+    },
+    {
+      "path": "profile-mobile.jpg",
+      "width": 390,
+      "height": 1458,
+      "sha256": "4206fc846f43c49aa8a161a4bc17207be50907596fb23790bac1b0ffb49509a9"
+    }
+  ]
+}

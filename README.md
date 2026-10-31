@@ -1,13 +1,14 @@
 # PitchScope
 
-A local, verifiable football analytics application: player search, contextual
+A football analytics portfolio application: player search, contextual
 comparison, match-event inspection and backend-generated PDF scouting reports.
 **Real demonstration data: 64/64 matches from the 2022 World Cup, 680 players
 with appearances, 32 teams and 234,637 events.** The interface, API messages,
 reports and documentation are in English.
 
 [Public repository](https://github.com/000zer000/pitchscope-football-analytics) ·
-[CI checks](https://github.com/000zer000/pitchscope-football-analytics/actions/workflows/ci.yml)
+[CI checks](https://github.com/000zer000/pitchscope-football-analytics/actions/workflows/ci.yml) ·
+[Latest release](https://github.com/000zer000/pitchscope-football-analytics/releases/latest)
 
 Compare players in an explicit tournament/role/minutes reference group, inspect
 the underlying match events, and export the same statistics as a PDF. The project
@@ -17,6 +18,10 @@ engineering. Provider xG is supplied by StatsBomb, not trained by this project.
 No live application URL is claimed: [hosting and data-rights gates](docs/public-demo-readiness.md).
 Native PostgreSQL, Chromium E2E and clean Compose validation passed in
 [GitHub Actions](https://github.com/000zer000/pitchscope-football-analytics/actions/runs/41114023347).
+[Watch the captioned ~92-second real demo](https://github.com/000zer000/pitchscope-football-analytics/releases/download/v1.1.0/pitchscope-demo.mp4) ·
+[Sample PDF](https://github.com/000zer000/pitchscope-football-analytics/releases/download/v1.1.0/pitchscope-comparison.pdf) ·
+[Three-forward case study](docs/case-study.md).
+
 See [validation progress](docs/progress.md) for exact scope and results. [Recruiter material and learning exercise](docs/recruiter-summary.md).
 
 ## Start locally
@@ -31,6 +36,8 @@ make local          # database, migrations, cached import, API and frontend
 
 Open http://127.0.0.1:5173 ; API documentation: http://127.0.0.1:8000/docs.
 The prepared local checkout already has the ignored raw cache and database.
+If port 55432 is occupied, use `PGPORT=55434 make local`; an existing service
+is never stopped or reused silently.
 Press Ctrl+C to stop. Ports: 5173, 8000, 55432. Stop the API before administrative
 operations under PGlite, which accepts one connection in this setup.
 
@@ -161,11 +168,31 @@ not production scalability or concurrency claims.
 Comparison: `/?view=compare&left=5503&right=3009&role=Forward&min=180`.
 Final: `/?view=matches&match=3869685`. Filters and comparisons are shareable by URL.
 
-![Real player explorer](docs/screenshots/explorer-desktop.jpg)
+![Verified comparison: visible bars and numeric percentiles](docs/screenshots/comparison-desktop.jpg)
+
+[Real player explorer](docs/screenshots/explorer-desktop.jpg)
 
 [Comparison](docs/screenshots/comparison-desktop.jpg) ·
 [Match and source](docs/screenshots/match-desktop.jpg) ·
-[Mobile](docs/screenshots/explorer-mobile.jpg)
+[Mobile](docs/screenshots/explorer-mobile.jpg) ·
+[Player profile](docs/screenshots/profile-mobile.jpg) ·
+[Shot map on mobile](docs/screenshots/match-mobile.jpg)
+
+## Reproduce the football case study
+
+[Read the question, verified observations and limitations](docs/case-study.md).
+Messi, Mbappé and Álvarez are compared using existing metrics, the same
+application services, and an explicit group of 69 forwards. No talent ranking.
+
+```bash
+# Existing migrated, fully imported database; stop the API under PGlite.
+PYTHONPATH=backend uv run python scripts/case-study.py --output work/case-study --check docs/case-study.json
+```
+
+The output contains attributed aggregate analysis, a vector chart and its method.
+API/screen/PDF values share the backend services. The Chromium checks assert
+bar geometry and ratios, displayed values, actual percentile text and null/zero
+handling, plus responsive user journeys at 390 and 1440 pixels.
 
 ## Configuration and security
 

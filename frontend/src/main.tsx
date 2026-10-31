@@ -214,7 +214,7 @@ function App() {
                 {
                   players: "Explorer",
                   compare: "Comparison",
-                  matches: "Matchs",
+                  matches: "Matches",
                   method: "Methodology",
                 } as Record<string, string>
               )[page] || "Explorer"}

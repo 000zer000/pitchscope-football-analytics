@@ -33,3 +33,16 @@ Practical implementation:
 The official media pack https://statsbomb.com/media-pack/ redirects to Bynder.
 The logo supplied in the official repository was used. Provider availability and
 accuracy are not guaranteed by PitchScope. The source code is public; no raw dataset or public event API was deployed.
+
+## v1.1 presentation scope
+
+Rechecked the pinned agreement and source README for this delivery. Its opening
+allows public sharing of analysis and conclusions; raw-data redistribution and
+commercial exploitation remain restricted. The sample reports, three-forward
+case study and captioned recording present attributed descriptive research with
+the provider logo. They contain aggregate analysis and selected event metadata,
+not original event payload files or a downloadable dataset. Real-data browser
+traces are disabled to avoid capturing provider response bodies in CI artifacts.
+No screenshot in the refreshed presentation expands the raw JSON disclosure.
+The code's MIT licence does not relicense these provider-derived materials.
+A public raw-event API still requires a resolved redistribution contract.

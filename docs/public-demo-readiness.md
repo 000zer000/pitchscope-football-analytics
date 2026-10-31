@@ -15,7 +15,8 @@ no screenshot, archive or browser recording is described as a deployed applicati
 - Render's free database expires after 30 days; free service filesystems are
   ephemeral. A permanent-data claim would be misleading.
 
-Sources checked 30 October 2026:
+Browser account access rechecked 1 November 2026; both routes still require sign-in.
+Render free-tier documentation rechecked for this delivery:
 https://render.com/docs/free
 https://huggingface.co/docs/hub/spaces-sdks-docker
 

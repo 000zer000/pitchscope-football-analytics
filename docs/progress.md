@@ -1,3 +1,70 @@
+# v1.1.0 verification update - 1 November 2026
+
+The v1.0.0 publication was rechecked on GitHub before editing: public personal
+repository, main at b630c5f, successful required CI and published release.
+
+## Corrected and inspected
+
+- Replaced the malformed literal percentile template with numeric backend
+  midranks and contract labels. Messi renders P89 / P98 / P91 for shots/xG/passes.
+- Confirmed valid input data and non-zero chart geometry. Default animation
+  allowed an early screenshot to show empty axes. Disabled bar animation and
+  added actual coloured geometry, width-ratio and numeric browser assertions.
+- Added full player-name legends and table headers, explicit null/zero text,
+  wrapped long names and full-width mobile player controls. The page stays
+  within 390 and 1440 pixels; comparison tables scroll within their container.
+- Reproduced the three-forward case study through application services. SQL
+  floating aggregation order differed at insignificant decimal places across
+  builds; exported JSON uses documented nine-decimal rounding. Application
+  metrics and transformation 1.2.0 remain unchanged.
+- Generated and rendered final one-page reports for Messi/Mbappé and Cristiano
+  Ronaldo/Mario Pašalić. Names, extended Latin characters, rows, bars, warnings,
+  source and attribution were visually checked; shared values match services.
+- Local database counts and every import record compare equal before/after QA.
+  Default port 55432 was occupied by another project, which was left untouched.
+  PitchScope ran on 55434; startup now probes its port before opening data files.
+
+## Executed local checks
+
+- 18 backend tests passed on a separate native PostgreSQL 17.10 instance,
+  dedicated pitchscope_test database, port 55435, --require-postgres, no skips.
+- 4 Vitest tests; Ruff lint/format; frozen uv sync; TypeScript/Vite build passed.
+- Chromium comparisons at both widths assert actual bar geometry and ratios,
+  API values and percentiles, null/zero and long names. The third case-study
+  player is also checked against the screen and extracted PDF values.
+- Real search/filter/select/profile/match/source/PDF user journey passed.
+- Responsive search/profile/shot-map/team filtering/methodology checks passed
+  at 390 and 1440. No page overflow; final's 30 shots and France's 10 verified.
+- Genuine paced demonstration passed with 92.009 seconds of recorded steps.
+  Captioned MP4 packaging and ffprobe duration checks run in real-data CI.
+
+Sandboxed Chromium initially failed before startup; approved process permissions
+allowed actual local checks. An initial recording configuration was corrected
+and its successful discovery and real execution were verified. An initial case
+export CI failure exposed floating SUM-order noise; the fix preserves every
+published two-decimal value. Failed runs remain visible.
+
+Required native PostgreSQL/Chromium/Docker CI passed for implementation 4dc5e3b:
+https://github.com/000zer000/pitchscope-football-analytics/actions/runs/41253207590
+The release notes and final handoff identify the final exact commit and runs.
+
+## Deliverables and limits
+
+Refreshed screenshots replace presentation assets. README links the captioned
+recording, sample PDF and case study. The interview guide explains the observed
+rendering defect and the meaningful regression checks. Two factual CV bullets
+and a concise LinkedIn draft remain in docs/recruiter-summary.md; nothing was
+posted to LinkedIn and no CV/application folder was edited.
+
+No live app is deployed. Render and Hugging Face still require sign-in. Render
+free PostgreSQL expires after 30 days; the available Sites runtime cannot host
+this Python/psycopg stack. The local raw-event response contract still has a
+provider redistribution gate. No payment, subscription or domain was created.
+The short tournament, coarse roles, penalty mix, context and sampling limits
+remain explicit. No trained xG model, talent score or career prediction.
+
+---
+
 # Delivery status — 30 October 2026
 
 ## Public verification update

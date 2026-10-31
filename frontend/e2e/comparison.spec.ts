@@ -1,5 +1,7 @@
 import { test, expect, type Page } from "@playwright/test";
 import { readFileSync } from "node:fs";
+import { execFileSync } from "node:child_process";
+import path from "node:path";
 import type { Comparison } from "../src/types";
 const fmt = (v: unknown, digits = 2) =>
   typeof v === "number"
@@ -15,19 +17,27 @@ export async function assertCharts(page: Page, data: Comparison) {
     const bars = chart.locator(".recharts-bar-rectangle .recharts-rectangle");
     // Assert actual, visible, coloured SVG geometry, not a heading or an axis.
     await expect(bars).toHaveCount(positive.length);
-    const widths: number[] = [];
-    for (const bar of await bars.all()) {
-      const box = await bar.boundingBox();
-      expect(box!.width).toBeGreaterThan(1);
-      expect(box!.height).toBeGreaterThan(10);
-      expect(await bar.getAttribute("fill")).toMatch(/^#(2c7259|668bc0)$/);
-      widths.push(box!.width);
-    }
-    if (widths.length === 2)
-      expect(widths[0] / widths[1]).toBeCloseTo(
-        positive[0][key]! / positive[1][key]!,
-        1,
+    await expect(async () => {
+      // Read one DOM snapshot and retry through responsive container remounts.
+      const geometry = await bars.evaluateAll((nodes) =>
+        nodes.map((e) => ({
+          width: e.getBoundingClientRect().width,
+          height: e.getBoundingClientRect().height,
+          fill: e.getAttribute("fill"),
+        })),
       );
+      expect(geometry).toHaveLength(positive.length);
+      for (const box of geometry) {
+        expect(box.width).toBeGreaterThan(1);
+        expect(box.height).toBeGreaterThan(10);
+        expect(box.fill).toMatch(/^#(2c7259|668bc0)$/);
+      }
+      if (geometry.length === 2)
+        expect(geometry[0].width / geometry[1].width).toBeCloseTo(
+          positive[0][key]! / positive[1][key]!,
+          1,
+        );
+    }).toPass({ timeout: 5000 });
     for (const [i, p] of data.players.entries()) {
       await expect(
         page.getByTestId(`${key}-chart-value-${p.id}`),
@@ -126,6 +136,40 @@ test("comparison bars, rates and percentiles agree with API at 1440 and 390 pixe
     await expect(page.locator(".percentile-player").first()).toContainText(
       "Unavailable",
     );
+  }
+  if (real) {
+    await page
+      .getByRole("combobox", { name: "Comparison threshold" })
+      .selectOption("180");
+    await page
+      .getByRole("combobox", { name: "Player 2", exact: true })
+      .selectOption("29560");
+    const third: Comparison = await (
+      await request.get(
+        "/api/compare?left=5503&right=29560&role=Forward&min_minutes=180",
+      )
+    ).json();
+    await expect(page.getByTestId("shots_p90-29560")).toHaveText("1.91");
+    await assertCharts(page, third);
+    const [download] = await Promise.all([
+      page.waitForEvent("download"),
+      page.getByRole("link", { name: "Export PDF report" }).click(),
+    ]);
+    await download.saveAs("test-results/study-alvarez.pdf");
+    const file = await download.path();
+    const text = execFileSync(
+      path.resolve("../.venv/bin/python"),
+      [
+        "-c",
+        'from pypdf import PdfReader; import sys; print("\\n".join(p.extract_text() for p in PdfReader(sys.argv[1]).pages))',
+        file!,
+      ],
+      { encoding: "utf8" },
+    );
+    expect(text).toContain("Julián Álvarez");
+    for (const p of third.players)
+      for (const key of ["xg", "shots_p90", "xg_p90", "passes_p90"] as const)
+        expect(text).toContain(p[key]!.toFixed(2));
   }
 });
 

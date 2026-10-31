@@ -1,26 +1,33 @@
-# Reproducible 90-second demonstration
+# Real ~92-second recruiter demonstration
 
-Prerequisite: real data downloaded/imported and the app open at
-http://127.0.0.1:5173 (or http://localhost:8080 with Compose).
-Never demonstrate synthetic CI fixtures as real football data.
+The v1.1.0 release contains a genuine Chromium recording of the running app,
+with burned-in English captions and an optional WebVTT track. It uses the pinned
+complete real tournament, not CI fixtures. There is no voice-over and no public
+application hosting claim. No raw JSON disclosure is expanded in the recording.
 
-- **0–15 s:** show 64/64 matches, 680 players and pinned provenance. Explain
-  that the scope is one complete tournament rather than a club season.
-- **15–30 s:** search “Messi”, choose Forward and a 180-minute threshold,
-  select him, then search “Mbappé” and select him.
-- **30–50 s:** Compare players. Show reference-group size, minutes, goals,
-  provider xG and per-90 bars. Explain stoppage-time inclusion and the absence
-  of a talent score.
-- **50–70 s:** open a profile, then Argentina–France on 18 December 2022.
-  Select a shot to inspect its source ID, xG and available attributes. Show
-  shootout attempts separately from match shots.
-- **70–85 s:** return to Comparison, export the PDF and verify an xG value
-  against the screen.
-- **85–90 s:** open Methodology and show source, commit, hashes and limitations.
+- 0-5 s: real player explorer and coverage.
+- 5-13 s: Forward / 180-minute filter and Messi search.
+- 13-23 s: profile and appearances behind the totals.
+- 23-35 s: select Messi, search/select Mbappé and compare 69 reference players.
+- 35-59 s: visible per-90 bars, numeric percentiles and the volume/quality caveat.
+- 59-74 s: Argentina-France shot map and selected source event metadata.
+- 74-82 s: return to the comparison and the matching xG values.
+- 82-92 s: actual PDF download, provenance and limitations captions.
 
-Direct comparison:
-`/?view=compare&left=5503&right=3009&role=Forward&min=180`
+Actual cue timings are recorded with the video, rather than guessed from the
+script. Each stage waits for real controls and verified data. The test fails if
+source coverage, source event, numeric percentile or PDF download is missing.
 
+```bash
+# Start the real app first. Chromium must be installed.
+cd frontend
+RECORD_VIDEO=true npm run e2e -- demo.spec.ts
+```
+
+`frontend/e2e/demo.spec.ts` produces the WebM, captions and timing JSON.
+The real-data CI run renders the captioned MP4 with FFmpeg and checks its duration
+with ffprobe (88-115 s bound). Default required CI uses synthetic fixtures and
+runs regression tests without creating a misleading real-data demo.
+
+Direct comparison: `/?view=compare&left=5503&right=3009&role=Forward&min=180`.
 Final: `/?view=matches&match=3869685`.
-The equivalent runner scenario is `frontend/e2e/journey.spec.ts`. It selects the
-two forwards with most minutes so it can also run on clearly synthetic CI data.

@@ -11,6 +11,16 @@ export DB_POOL_SIZE=1
 uv sync --frozen
 [ -d scripts/local-db/node_modules ] || npm ci --prefix scripts/local-db
 [ -d frontend/node_modules ] || npm ci --prefix frontend
+# Fail before opening persistent files or connecting to an unrelated service.
+node --input-type=module <<'JS'
+import net from 'node:net'
+const probe = net.createServer()
+probe.on('error', () => {
+  console.error(`Port ${process.env.PGPORT} is unavailable. Choose a free PGPORT; existing services were left untouched.`)
+  process.exit(1)
+})
+probe.listen(Number(process.env.PGPORT), '127.0.0.1', () => probe.close())
+JS
 PGLITE_DATA="$PWD/work/pglite" node scripts/local-db/server.mjs > work/local-db.log 2>&1 &
 dbpid=$!
 apipid='';webpid=''
