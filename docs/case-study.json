@@ -1,0 +1,81 @@
+{
+  "source": "StatsBomb Open Data / hudl/open-data",
+  "source_commit": "4b73468fc5b0f1950f9f66fada70ad3a4f9327cb",
+  "transform_versions": [
+    "1.2.0"
+  ],
+  "population": {
+    "season": "43-106",
+    "role": "Forward",
+    "min_minutes": 180,
+    "count": 69
+  },
+  "players": [
+    {
+      "id": 5503,
+      "name": "Lionel Andrés Messi Cuccittini",
+      "teams": [
+        "Argentina"
+      ],
+      "appearances": 7,
+      "minutes": 791.0888166666666,
+      "shots": 32,
+      "goals": 7,
+      "xg": 6.031649225,
+      "penalties": 5,
+      "shots_p90": 3.6405520332535777,
+      "xg_p90": 0.6862041515608162,
+      "passes_p90": 42.20765013553367,
+      "pass_pct": 82.47978436657682,
+      "percentiles": {
+        "shots_p90": 89.1304347826087,
+        "xg_p90": 97.82608695652173,
+        "passes_p90": 90.57971014492753
+      }
+    },
+    {
+      "id": 3009,
+      "name": "Kylian Mbappé Lottin",
+      "teams": [
+        "France"
+      ],
+      "appearances": 7,
+      "minutes": 690.4695333333333,
+      "shots": 31,
+      "goals": 8,
+      "xg": 4.233251877000001,
+      "penalties": 2,
+      "shots_p90": 4.040728613369666,
+      "xg_p90": 0.5517878060320885,
+      "passes_p90": 30.370637642423617,
+      "pass_pct": 77.25321888412017,
+      "percentiles": {
+        "shots_p90": 96.3768115942029,
+        "xg_p90": 90.57971014492753,
+        "passes_p90": 63.04347826086956
+      }
+    },
+    {
+      "id": 29560,
+      "name": "Julián Álvarez",
+      "teams": [
+        "Argentina"
+      ],
+      "appearances": 6,
+      "minutes": 471.3075833333333,
+      "shots": 10,
+      "goals": 4,
+      "xg": 1.84693738,
+      "penalties": 0,
+      "shots_p90": 1.909580986655742,
+      "xg_p90": 0.3526876504391771,
+      "passes_p90": 22.15113944520661,
+      "pass_pct": 80.17241379310344,
+      "percentiles": {
+        "shots_p90": 47.10144927536232,
+        "xg_p90": 73.18840579710145,
+        "passes_p90": 41.30434782608695
+      }
+    }
+  ]
+}

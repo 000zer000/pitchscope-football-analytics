@@ -93,7 +93,7 @@ def render_report(data, coverage):
         drawing.add(String(410, y + 3, fmt(value), fontName="PitchSans", fontSize=10, fillColor=NAVY))
     story += [
         drawing,
-        p("Green: first player. Blue: second player. Volume does not measure talent."),
+        p(f"Green: {a['name']}. Blue: {b['name']}. Volume does not measure talent."),
         Spacer(1, 3 * mm),
     ]
     for warning in data["warnings"]:

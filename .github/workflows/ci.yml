@@ -53,6 +53,7 @@ jobs:
             uv run python -m app.ingest import
             uv run python -m app.ingest import
             uv run python scripts/audit-real.py
+            uv run python scripts/case-study.py --check docs/case-study.json
           else
             uv run python scripts/seed-test.py
           fi
@@ -70,6 +71,16 @@ jobs:
           for i in $(seq 1 30); do curl -fsS http://127.0.0.1:5173/api/ready && break; sleep 1; done
           cd frontend
           RECORD_VIDEO=${{ inputs.real_data }} npm run e2e
+      - name: Package captioned real demonstration
+        if: inputs.real_data == true
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+          video=$(find frontend/test-results -path "*90-second*" -name video.webm -print -quit)
+          test -n "$video"
+          ffmpeg -y -i "$video" -vf "subtitles=frontend/test-results/pitchscope-demo.vtt:force_style='FontSize=16,Outline=2,MarginV=20'" -c:v libx264 -crf 23 -pix_fmt yuv420p -movflags +faststart frontend/test-results/pitchscope-demo.mp4
+          ffprobe -v error -show_entries format=duration -of csv=p=0 frontend/test-results/pitchscope-demo.mp4 > frontend/test-results/video-duration.txt
+          python -c 'from pathlib import Path; duration=float(Path("frontend/test-results/video-duration.txt").read_text()); assert 88 <= duration <= 115, duration'
       - uses: actions/upload-artifact@v4
         if: always()
         with:

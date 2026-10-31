@@ -28,15 +28,7 @@ import {
   Users,
   X,
 } from "lucide-react";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from "recharts";
+import { ComparisonCharts } from "./ComparisonCharts";
 import type { Player, Match, Coverage, Comparison, SourceEvent } from "./types";
 import { format } from "./types";
 import "./style.css";
@@ -903,8 +895,9 @@ function Compare({
                   <thead>
                     <tr>
                       <th>METRIC / UNIT</th>
-                      <th>PLAYER 1</th>
-                      <th>PLAYER 2</th>
+                      {r.data.players.map((p) => (
+                        <th key={p.id}>{p.name}</th>
+                      ))}
                     </tr>
                   </thead>
                   <tbody>
@@ -929,72 +922,7 @@ function Compare({
                 </table>
               </div>
             </section>
-            <section className="panel charts">
-              <h2>Volumes per 90 minutes</h2>
-              <p>Reliable playing-time appearances only.</p>
-              {[
-                ["shots_p90", "Shots / 90 min"],
-                ["xg_p90", "xG / 90 min"],
-                ["passes_p90", "Passes / 90 min"],
-              ].map(([key, label]) => (
-                <div className="bar-section" key={key}>
-                  <strong>{label}</strong>
-                  <div className="bar-chart">
-                    <ResponsiveContainer width="100%" height={112}>
-                      <BarChart
-                        data={r.data!.players.map((p, i) => ({
-                          name: "Player " + (i + 1),
-                          value: p[key as keyof Player],
-                          fill: i === 0 ? "#2c7259" : "#668bc0",
-                        }))}
-                        layout="vertical"
-                        margin={{ left: 0, right: 20, top: 8, bottom: 4 }}
-                      >
-                        <CartesianGrid
-                          strokeDasharray="3 3"
-                          horizontal={false}
-                        />
-                        <XAxis type="number" fontSize={10} />
-                        <YAxis
-                          type="category"
-                          dataKey="name"
-                          width={66}
-                          fontSize={11}
-                        />
-                        <Tooltip formatter={(v) => format(v)} />
-                        <Bar
-                          dataKey="value"
-                          radius={[0, 3, 3, 0]}
-                          barSize={18}
-                        />
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-              ))}
-              <p className="table-note">
-                Scales differ between metrics; each chart shows its unit.
-              </p>
-              <h3>Volume percentiles</h3>
-              {r.data.players.map((p) => (
-                <p key={p.id}>
-                  <strong>{p.name}</strong>
-                  <br />
-                  {Object.keys(p.percentiles || {}).length
-                    ? Object.entries(p.percentiles!)
-                        .map(
-                          ([k, v]) =>
-                            `${k.replace("_p90", " /90")} : $P{format(v, 0)}`,
-                        )
-                        .join(" · ")
-                    : "Unavailable: reference group too small or player below the threshold."}
-                </p>
-              ))}
-              <small>
-                Empirical percentile with tied midranks. More volume does not
-                imply greater quality.
-              </small>
-            </section>
+            <ComparisonCharts data={r.data} />
           </div>
         </>
       )}

@@ -15,7 +15,9 @@ test("search, filter, compare, inspect a match, export verified PDF", async ({
   ).items;
   expect(rows.length).toBeGreaterThanOrEqual(2);
   const [a, b] = rows;
-  const threshold = process.env.RECORD_VIDEO === "true" ? "180" : "0";
+  const real =
+    (await (await request.get("/api/coverage")).json()).complete === true;
+  const threshold = real ? "180" : "0";
   await page.goto("/");
   await page
     .getByRole("combobox", { name: "Role group", exact: true })
@@ -85,7 +87,14 @@ test("search, filter, compare, inspect a match, export verified PDF", async ({
   );
   expect(text).toContain(a.name);
   expect(text).toContain(b.name);
-  for (const p of api.players) expect(text).toContain(p.xg.toFixed(2));
+  for (const p of api.players)
+    for (const metric of api.metrics) {
+      const value = p[metric.key];
+      if (value !== null)
+        expect(text).toContain(
+          Number.isInteger(value) ? String(value) : value.toFixed(2),
+        );
+    }
   await page
     .getByRole("button", { name: "Open profile", exact: true })
     .first()
@@ -95,7 +104,7 @@ test("search, filter, compare, inspect a match, export verified PDF", async ({
     page.getByRole("heading", { name: "Shot map", exact: true }),
   ).toBeVisible();
   const point = page.getByRole("button", { name: /minute,/ }).first();
-  await point.click();
+  await point.press("Enter");
   await expect(
     page.getByRole("heading", { name: "Source event ID" }),
   ).toBeVisible();
@@ -120,6 +129,9 @@ test("search, filter, compare, inspect a match, export verified PDF", async ({
   expect(
     await page.evaluate(() => document.documentElement.scrollWidth),
   ).toBeLessThanOrEqual(390);
+  await page
+    .getByRole("button", { name: "Open profile for " + a.name, exact: true })
+    .waitFor();
   await page.screenshot({
     path: "test-results/explorer-mobile.png",
     fullPage: true,
