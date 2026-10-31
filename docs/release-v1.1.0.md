@@ -2,7 +2,8 @@
 
 This release repairs the comparison presentation and supplies a reproducible
 three-forward study, refreshed real screenshots, a captioned real demonstration
-and sample reports. The existing football conventions and transformation 1.2.0
+and sample reports. A separate caption band preserves the recorded interface;
+visual QA of the encoded file is part of delivery. The existing football conventions and transformation 1.2.0
 are preserved. No new metric or predictive model was introduced.
 
 - Numeric backend percentiles replace the malformed template. Human metric

@@ -75,12 +75,17 @@ jobs:
         if: inputs.real_data == true
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y ffmpeg
+          sudo apt-get install -y --no-install-recommends ffmpeg
           video=$(find frontend/test-results -name video.webm -print -quit)
           test -n "$video"
-          ffmpeg -y -i "$video" -vf "subtitles=frontend/test-results/pitchscope-demo.vtt:force_style='FontSize=16,Outline=2,MarginV=20'" -c:v libx264 -crf 23 -pix_fmt yuv420p -movflags +faststart frontend/test-results/pitchscope-demo.mp4
+          ffmpeg -y -i "$video" -vf "pad=iw:ih+150:0:0:color=0x142c2a,subtitles=frontend/test-results/pitchscope-demo.vtt:force_style='FontSize=9,Outline=1,MarginV=8'" -c:v libx264 -crf 23 -pix_fmt yuv420p -movflags +faststart frontend/test-results/pitchscope-demo.mp4
           ffprobe -v error -show_entries format=duration -of csv=p=0 frontend/test-results/pitchscope-demo.mp4 > frontend/test-results/video-duration.txt
           python -c 'from pathlib import Path; duration=float(Path("frontend/test-results/video-duration.txt").read_text()); assert 88 <= duration <= 115, duration'
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of json frontend/test-results/pitchscope-demo.mp4 > frontend/test-results/video-metadata.json
+          python -c 'import json; from pathlib import Path; s=json.loads(Path("frontend/test-results/video-metadata.json").read_text())["streams"][0]; assert (s["width"],s["height"])==(1440,1200), s'
+          for second in 12 18 43 53 65 86; do
+            ffmpeg -hide_banner -loglevel error -y -ss "$second" -i frontend/test-results/pitchscope-demo.mp4 -frames:v 1 "frontend/test-results/demo-frame-$second.png"
+          done
       - uses: actions/upload-artifact@v4
         if: always()
         with:

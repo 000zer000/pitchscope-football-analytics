@@ -1,7 +1,8 @@
 # Real ~92-second recruiter demonstration
 
 The v1.1.0 release contains a genuine Chromium recording of the running app,
-with burned-in English captions and an optional WebVTT track. It uses the pinned
+with English captions in a dedicated band below the recorded viewport and an
+optional WebVTT track. The chart and source details remain unobscured. It uses the pinned
 complete real tournament, not CI fixtures. There is no voice-over and no public
 application hosting claim. No raw JSON disclosure is expanded in the recording.
 

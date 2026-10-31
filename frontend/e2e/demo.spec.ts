@@ -81,6 +81,7 @@ if (process.env.RECORD_VIDEO === "true") {
       await expect(
         page.getByText("69 reference players", { exact: true }),
       ).toBeVisible();
+      await page.mouse.move(10, 10);
       cue(
         "Compare Messi and Mbappé against 69 forwards with at least 180 reliable minutes. Volume is not talent.",
       );
