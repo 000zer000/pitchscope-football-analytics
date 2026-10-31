@@ -42,7 +42,7 @@ Minutes are elapsed playing time, not nominal match durations.
 Against the reference population, Messi's displayed volume percentiles are P89
 for shots/90, P98 for xG/90 and P91 for passes/90; Mbappé's are P96, P91 and P63;
 Álvarez's are P47, P73 and P41. These are rounded empirical midranks with ties,
-not quality ratings or probabilities. Exact unrounded aggregates and percentiles
+not quality ratings or probabilities. Aggregates and percentiles exported to nine decimal places
 are in [the reproducible export](case-study.json).
 
 The useful next step is to review how those actions arose: for example, inspect
@@ -76,7 +76,9 @@ PYTHONPATH=backend uv run python scripts/case-study.py --output work/case-study 
 
 This calls `services.comparison` and `services.coverage`, the same SQL-backed
 services as the API and PDF. It refuses incomplete or synthetic tournaments,
-asserts the subject minutes, and checks exact stored JSON equality. It exports
+asserts the subject minutes, and checks stored JSON equality after rounding
+exports to nine decimal places. This avoids insignificant differences from SQL
+floating-point SUM order across PostgreSQL builds; application rates are unchanged. It exports
 this article, a vector chart and a small aggregate JSON analysis. No provider
 event payloads or raw files are exported. CI repeats the command on native
 PostgreSQL after the pinned import and compares screen values with this JSON.

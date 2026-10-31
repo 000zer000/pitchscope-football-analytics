@@ -22,6 +22,9 @@ PostgreSQL backend, React/TypeScript interface, contextual player comparisons,
 match-event inspection and consistent PDF exports. The demonstration covers the
 2022 World Cup with pinned StatsBomb Open Data. I focused on reproducibility,
 playing-time conventions and tracing each observation back to source events.
+A reproducible case study compares three forwards without turning volume into
+a talent score. Source, captioned demo and sample report:
+https://github.com/000zer000/pitchscope-football-analytics
 
 ## Guided code exercise: add pass volume to the comparison chart
 
@@ -29,7 +32,7 @@ Goal: understand a small existing feature without inventing a new metric.
 
 1. Run the application and locate `passes_p90` in backend/app/services.py.
 2. Explain its numerator, denominator and treatment of uncertain appearances.
-3. Find the chart metric list in frontend/src/main.tsx. The existing comparison
+3. Find the chart metric list in frontend/src/ComparisonCharts.tsx. The existing comparison
    table already contains passes/90; verify whether the chart does too before
    editing. If present, add goals/90 instead, reusing the API's `goals_p90`.
 4. Add the chart label and units; never calculate the rate in JavaScript.

@@ -74,10 +74,16 @@ test("comparison bars, rates and percentiles agree with API at 1440 and 390 pixe
         "xg",
         "minutes",
         "percentiles",
-      ])
-        expect(p[key as keyof typeof p]).toEqual(
-          study.players.find((s: { id: number }) => s.id === p.id)[key],
-        );
+      ]) {
+        const expected = study.players.find(
+          (s: { id: number }) => s.id === p.id,
+        )[key];
+        const actual = p[key as keyof typeof p];
+        if (key === "percentiles") {
+          for (const [metric, value] of Object.entries(expected))
+            expect(p.percentiles![metric]).toBeCloseTo(value as number, 8);
+        } else expect(actual).toBeCloseTo(expected, 8);
+      }
   }
   for (const width of [1440, 390]) {
     await page.setViewportSize({ width, height: 1050 });

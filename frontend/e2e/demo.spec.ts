@@ -1,10 +1,11 @@
 import { test, expect } from "@playwright/test";
 import { writeFileSync } from "node:fs";
 
+test.use({ video: { mode: "on", size: { width: 1440, height: 1050 } } });
+
 // This optional real-data demonstration records the actual app, never mocked responses.
 if (process.env.RECORD_VIDEO === "true") {
   test.describe("recruiter demonstration", () => {
-    test.use({ video: { mode: "on", size: { width: 1440, height: 1050 } } });
     test("90-second real search, comparison, evidence and export", async ({
       page,
       request,

@@ -9,7 +9,7 @@ export default defineConfig({
     headless: true,
     video: "retain-on-failure",
     viewport: { width: 1440, height: 1050 },
-    trace: "retain-on-failure",
+    trace: process.env.RECORD_VIDEO === "true" ? "off" : "retain-on-failure",
   },
   reporter: [["list"], ["json", { outputFile: "test-results/results.json" }]],
 });

@@ -38,17 +38,33 @@ serves Vite's production build and proxies /api in Compose.
   loses stoppage-time information.
 - SQL match joins were ambiguous because a team can be home or away. The join
   was made explicit with `Match.id == Appearance.match_id`.
-- Native PostgreSQL cannot initialise in this sandbox because shared-memory
-  syscalls are denied. PGlite enabled local SQL tests, but it does not prove
-  native multi-process or concurrent behaviour.
-- Chromium's Playwright runner is blocked by macOS Mach-port restrictions before
-  the test starts. The integrated browser provided initial inspection; native
-  PostgreSQL and Chromium were subsequently verified in green Linux CI runs.
+- Initial sandboxed PostgreSQL startup failed on shared-memory syscalls.
+  A dedicated native instance on port 55435 later passed the required tests
+  with approved process permissions; Linux CI validates PostgreSQL 17 as well.
+  The preserved local demonstration still uses the documented PGlite fallback.
+- Initial sandboxed Chromium startup failed on macOS Mach-port restrictions.
+  Approved process permissions allowed the actual local regression journey to
+  run; Linux CI also runs Chromium. Neither a screenshot nor a configured test
+  was treated as proof that the browser assertions passed.
 - psycopg prepared statements conflicted across PGlite's shared connection.
   Prepared statements were disabled, its local pool limited to one connection,
   and administrative work performed with the API stopped.
 - English role names are stored in appearances. Switching the product to English
   therefore required an explicit versioned rebuild, not just relabelling the UI.
+
+## Comparison rendering: an observed defect
+
+A malformed template printed `$P{format(v, 0)}` literally. A chart title test
+could not catch it. The fixed view renders backend midranks as P89/P98/P91,
+with labels supplied by the metric contract. Bar animation also allowed an
+early capture to show axes without bars despite valid SVG geometry later.
+Animation is disabled; Chromium now asserts non-zero coloured bar geometry,
+relative lengths, visible numeric values and exact backend percentile text at
+390 and 1440 pixels. Zero/null and long names have separate regression checks.
+
+The [three-forward case study](case-study.md) shares application services.
+Discuss why shot volume, xG and pass volume answer different descriptive
+questions, and why penalty mix and tournament context limit interpretation.
 
 ## Trace an xG value from JSON to PDF
 
@@ -79,7 +95,9 @@ serves Vite's production build and proxies /api in Compose.
 - How would another season be added without mixing reference groups?
 - Why do localhost timings not establish production scalability or concurrency?
 - How does atomic reconstruction prevent mixed transformation versions?
-- Which checks actually ran in GitHub Actions? At delivery: none; workflow only.
+- Which checks actually ran in GitHub Actions? Open the linked run for the
+  released commit; distinguish native PostgreSQL, synthetic CI, real-data
+  regression, Docker persistence and the separately recorded demonstration.
 
 ## Later work, only after V1 validation
 
