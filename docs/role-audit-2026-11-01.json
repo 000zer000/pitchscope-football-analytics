@@ -1,0 +1,31 @@
+{
+  "matches": 64,
+  "appearances": 1995,
+  "position_counts": {
+    "Goalkeeper": 131,
+    "Right Center Back": 141,
+    "Center Back": 40,
+    "Left Center Back": 138,
+    "Right Wing Back": 52,
+    "Left Wing Back": 49,
+    "Center Defensive Midfield": 68,
+    "Right Center Midfield": 88,
+    "Left Center Midfield": 91,
+    "Right Center Forward": 56,
+    "Left Center Forward": 54,
+    "Right Defensive Midfield": 111,
+    "Left Defensive Midfield": 102,
+    "Right Wing": 139,
+    "Left Wing": 126,
+    "Center Forward": 166,
+    "Right Attacking Midfield": 11,
+    "Right Back": 126,
+    "Left Back": 128,
+    "Center Attacking Midfield": 80,
+    "Right Midfield": 40,
+    "Left Midfield": 48,
+    "Left Attacking Midfield": 10
+  },
+  "changed_roles": [],
+  "unknown_appearances": 0
+}

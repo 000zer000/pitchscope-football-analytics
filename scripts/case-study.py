@@ -193,13 +193,13 @@ Open locally:
 Conventions for minutes, temporary absences, red cards, missing values, weighted
 ratios and shootout exclusion are unchanged: [methodology](methodology.md).
 Source: StatsBomb Open Data / hudl/open-data, pinned commit
-`4b73468fc5b0f1950f9f66fada70ad3a4f9327cb`, transformations `1.2.0`.
+`4b73468fc5b0f1950f9f66fada70ad3a4f9327cb`, transformations `TRANSFORM_VERSION_LABEL`.
 This attributed non-commercial research example shares analysis, not a dataset;
 [provider rights](data-rights.md) still apply. No raw-event public API is deployed.
 
 ![StatsBomb](../assets/statsbomb.png)
 """
-    )
+    ).replace("TRANSFORM_VERSION_LABEL", ", ".join(data["transform_versions"]))
 
 
 def main():

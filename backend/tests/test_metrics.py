@@ -1,12 +1,32 @@
 from copy import deepcopy
 
 import pytest
-from app.metrics import reconstruct
+from app.metrics import POSITION_ROLES, reconstruct, role_group
 from fixtures import event, fixture
 
 
 def by_id(events):
     return {r["player_id"]: r for r in reconstruct(events)[0]}
+
+
+@pytest.mark.parametrize("position", [None, "", "Unknown", "Unrecognised position", "New Back Role"])
+def test_unknown_position_never_defaults_to_forward(position):
+    assert role_group(position) == "Unknown"
+
+
+@pytest.mark.parametrize("position,role", list(POSITION_ROLES.items()))
+def test_explicit_position_contract(position, role):
+    assert role_group(position) == role
+
+
+def test_missing_replacement_role_preserves_minutes_and_unknown_role():
+    events = deepcopy(fixture())
+    for e in events:
+        if e["type"]["name"] == "Substitution":
+            e.pop("position", None)
+    row = by_id(events)[2]
+    assert row["position"] == "Unknown" and row["role"] == "Unknown"
+    assert row["minutes"] == 33
 
 
 def test_minutes_substitution_and_weighted_components():

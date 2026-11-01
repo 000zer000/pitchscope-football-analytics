@@ -119,6 +119,21 @@ def test_uncertain_numerator_excluded_and_rebuild(db, monkeypatch):
     assert {p["id"]: p for p in services.stats(db)}[1]["shots_p90"] == pytest.approx(90 / 62)
 
 
+def test_unknown_role_visible_overall_but_excluded_from_forward_cohort(client, db):
+    events = deepcopy(fixture())
+    for e in events:
+        if e["type"]["name"] == "Substitution":
+            e.pop("position", None)
+    ingest.import_match(db, meta(), events, lineups(), {"synthetic": "sha-test"}, "synthetic-test-only")
+    db.commit()
+    all_rows = {p["id"]: p for p in services.stats(db)}
+    assert all_rows[2]["roles"] == ["Unknown"]
+    assert all_rows[2]["minutes"] == 33
+    assert {p["id"] for p in services.stats(db, role="Forward")} == {1}
+    response = client.get("/api/compare?left=1&right=2&role=Forward&min_minutes=0")
+    assert response.status_code == 422
+
+
 def test_pdf_api_contract_and_small_population(client, db):
     seed(db)
     db.commit()

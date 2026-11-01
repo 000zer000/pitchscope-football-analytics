@@ -2,7 +2,52 @@
 
 from collections import defaultdict
 
-TRANSFORM_VERSION = "1.2.0"
+TRANSFORM_VERSION = "1.3.0"
+
+# Explicit provider names: missing/new labels must never enter a known-role cohort.
+POSITION_ROLES = {
+    "Goalkeeper": "Goalkeeper",
+    **dict.fromkeys(
+        (
+            "Right Back",
+            "Right Center Back",
+            "Center Back",
+            "Left Center Back",
+            "Left Back",
+            "Right Wing Back",
+            "Left Wing Back",
+        ),
+        "Defender",
+    ),
+    **dict.fromkeys(
+        (
+            "Right Defensive Midfield",
+            "Center Defensive Midfield",
+            "Left Defensive Midfield",
+            "Right Midfield",
+            "Right Center Midfield",
+            "Center Midfield",
+            "Left Center Midfield",
+            "Left Midfield",
+            "Right Attacking Midfield",
+            "Center Attacking Midfield",
+            "Left Attacking Midfield",
+        ),
+        "Midfielder",
+    ),
+    **dict.fromkeys(
+        (
+            "Right Wing",
+            "Left Wing",
+            "Right Center Forward",
+            "Center Forward",
+            "Left Center Forward",
+            "Secondary Striker",
+            "Striker",
+        ),
+        "Forward",
+    ),
+}
 
 
 def seconds(timestamp):
@@ -11,13 +56,8 @@ def seconds(timestamp):
 
 
 def role_group(position):
-    if "Goalkeeper" in position:
-        return "Goalkeeper"
-    if "Back" in position:
-        return "Defender"
-    if "Midfield" in position:
-        return "Midfielder"
-    return "Forward"
+    """Unknown roles remain visible in overall stats, outside known-role comparisons."""
+    return POSITION_ROLES.get(position, "Unknown")
 
 
 def reconstruct(events, lineups=None):
@@ -50,6 +90,8 @@ def reconstruct(events, lineups=None):
 
     def enter(pid, team, pos, t):
         pos = entry_positions.get(pid, pos)
+        # Preserve every supplied provider name; normalize only absent values.
+        pos = pos if isinstance(pos, str) and pos else "Unknown"
         if pid in active:
             issues[pid] = "Inconsistent overlapping presence"
         players.setdefault(pid, {"player_id": pid, "team_id": team, "position": pos, "role": role_group(pos)})

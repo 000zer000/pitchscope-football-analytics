@@ -1,4 +1,4 @@
-# Statistical conventions — transformation 1.2.0
+# Statistical conventions — transformation 1.3.0
 
 ## Scope and provenance
 
@@ -31,7 +31,11 @@ it falls back to the entry event's position. Groups are Goalkeeper, Defender,
 Midfielder and Forward. The role remains constant for the appearance; tactical
 changes do not split its counters. Team and role belong to appearances, not to
 one global player record. Version 1.2.0 changes role labels to English without
-changing event counts or playing-time conventions; an explicit rebuild is required.
+changing event counts or playing-time conventions. Version 1.3.0 replaces the catch-all
+Forward fallback with explicit provider position names. Missing/unrecognized positions
+are stored as Unknown, remain visible in overall statistics and are excluded from
+the four named-role comparison cohorts. No playing time is invented or removed
+because a role is unknown. An explicit atomic rebuild is required.
 
 ## Counts and denominators
 
