@@ -2,7 +2,7 @@
   "source": "StatsBomb Open Data / hudl/open-data",
   "source_commit": "4b73468fc5b0f1950f9f66fada70ad3a4f9327cb",
   "transform_versions": [
-    "1.2.0"
+    "1.3.0"
   ],
   "population": {
     "season": "43-106",

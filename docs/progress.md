@@ -181,3 +181,24 @@ make local. Another machine: make setup, make download, make local. The source
 archive excludes raw JSON, database files and installed dependencies. Native tests
 require a dedicated disposable _test database. Do not begin out-of-scope features
 until the remaining V1 checks are completed.
+
+
+## 1 November 2026 — explicit position mapping
+
+The catch-all Forward default now becomes Unknown for absent or unrecognized
+provider positions. Known roles use an explicit position table. Unknown
+appearances retain reliable minutes and overall counts but never enter a known
+role comparison cohort. Transformation 1.3.0 requires an atomic rebuild.
+
+Audited all 64 cached matches and 1,995 appearances: no unrecognized positions
+and no changed roles. Imported the complete pinned corpus into a new native
+PostgreSQL database and performed the explicit atomic rebuild there. Existing
+demo databases were left unchanged. Case-study numbers compare exactly with the
+prior version after changing only transformation provenance; the prior study is
+preserved in docs/history/v1.1. Source hashes, minutes and event counts are intact.
+
+Verification: 51 native PostgreSQL tests, four frontend tests, TypeScript/build,
+four real-corpus Chromium journeys at 1440/390px, source clock audit, Ruff and
+format checks passed. The resulting comparison PDF and mobile interface were
+rendered and visually inspected. Existing release videos remain historical
+v1.1 artifacts, not newly recorded demonstrations.

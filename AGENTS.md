@@ -15,7 +15,7 @@ the same service. Do not duplicate rate calculations in the browser. Never imput
 90 minutes to missing playing time or claim to have trained StatsBomb's xG model.
 Do not commit data/raw. backend/tests/fixtures.py is synthetic test data only.
 Changes to transformation rules or stored role names require a version bump and
-an explicit atomic rebuild. Current version 1.2.0 uses English role groups.
+an explicit atomic rebuild. Current transformation 1.3.0 uses explicit provider roles and an Unknown fallback.
 
 Checks: uv run ruff check backend scripts/*.py; uv run ruff format --check backend
 scripts/*.py; TEST_DATABASE_URL=<dedicated disposable _test database> uv run pytest;

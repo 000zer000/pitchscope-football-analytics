@@ -42,7 +42,7 @@ Press Ctrl+C to stop. Ports: 5173, 8000, 55432. Stop the API before administrati
 operations under PGlite, which accepts one connection in this setup.
 
 Existing transformation versions require an explicit rebuild before importing
-again. Version 1.2.0 stores English role groups. Start the local database alone
+again. Transformation 1.3.0 stores explicit English role groups and preserves unknown positions outside known-role comparison cohorts. Start the local database alone
 if a rebuild is required:
 
 ```bash
